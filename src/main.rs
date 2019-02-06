@@ -37,10 +37,10 @@ fn get_info(name: String) -> String {
 
 fn find_by_name(coll: &Collection, name: String) -> UserDocument {
     let user = coll.find_one(Some(doc!{ "name": name }), None).ok().expect("Failed to find_one").unwrap();
-    doc_to_dao(user)
+    to_user(user)
 }
 
-fn dao_to_doc<T: Serialize>(item: &T) -> ::bson::Document {
+fn to_doc<T: Serialize>(item: &T) -> ::bson::Document {
     let bson = ::bson::to_bson(item).ok().expect("Couldn't serialize to doc");
     match bson {
         Bson::Document(d) => d,
@@ -48,7 +48,7 @@ fn dao_to_doc<T: Serialize>(item: &T) -> ::bson::Document {
     }
 }
 
-fn doc_to_dao<T: DeserializeOwned>(doc: Document) -> T {
+fn to_user<T: DeserializeOwned>(doc: Document) -> T {
     ::bson::from_bson(Bson::Document(doc.clone())).ok().expect("Couldn't deserialize to struct")
 }
 
