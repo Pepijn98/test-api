@@ -37,7 +37,7 @@ fn get_info(name: String) -> String {
 
 fn find_by_name(coll: &Collection, name: String) -> UserDocument {
     let user = coll.find_one(Some(doc!{ "name": name }), None).ok().expect("Failed to find_one").unwrap();
-    to_user(user)
+    to_struct(user)
 }
 
 fn to_doc<T: Serialize>(item: &T) -> ::bson::Document {
@@ -48,7 +48,7 @@ fn to_doc<T: Serialize>(item: &T) -> ::bson::Document {
     }
 }
 
-fn to_user<T: DeserializeOwned>(doc: Document) -> T {
+fn to_struct<T: DeserializeOwned>(doc: Document) -> T {
     ::bson::from_bson(Bson::Document(doc.clone())).ok().expect("Couldn't deserialize to struct")
 }
 
