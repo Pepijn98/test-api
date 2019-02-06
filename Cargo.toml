@@ -1,7 +1,7 @@
 [package]
-name = "rust-test"
+name = "test-api"
 version = "0.1.0"
-authors = ["KurozeroPB <root@kurozero.xyz>"]
+authors = ["KurozeroPB <root@kurozeropb.info>"]
 
 [dependencies]
 rocket = "0.4.0"
