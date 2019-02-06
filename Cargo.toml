@@ -1,0 +1,12 @@
+[package]
+name = "rust-test"
+version = "0.1.0"
+authors = ["KurozeroPB <root@kurozero.xyz>"]
+
+[dependencies]
+rocket = "0.4.0"
+rocket_codegen = "0.4.0"
+mongodb = "0.3.12"
+serde = "1.0.87"
+serde_derive = "1.0.87"
+bson = "0.13.0"
