@@ -5,6 +5,8 @@
 #[macro_use(bson, doc)] extern crate bson;
 extern crate mongodb;
 extern crate serde;
+extern crate rocket_contrib;
+extern crate tera;
 
 use bson::{Document, Bson};
 use bson::oid::ObjectId;
@@ -13,6 +15,8 @@ use mongodb::db::{Database, ThreadedDatabase};
 use mongodb::coll::Collection;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
+use rocket_contrib::templates::Template;
+use tera::Context;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct UserDocument {
@@ -22,6 +26,14 @@ struct UserDocument {
 }
 
 static mut DB: Option<Database> = None;
+
+#[get("/")]
+fn index() -> Template {
+    let mut context = Context::new();
+
+    context.add("my_message", &"This is a test message");
+    Template::render("layout", &context)
+}
 
 #[get("/<name>")]
 fn get_info(name: String) -> String {
@@ -58,5 +70,9 @@ fn main() {
         DB = Some(client.db("rusttest"));
     }
 
-    rocket::ignite().mount("/info", routes![get_info]).launch();
+    rocket::ignite()
+        .mount("/", routes![index])
+        .mount("/info", routes![get_info])
+        .attach(Template::fairing())
+        .launch();
 }
